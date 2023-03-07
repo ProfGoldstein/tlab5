@@ -6,15 +6,15 @@
  * are met:
  *
  *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 notice, this list of conditions and the following disclaimer.
  *
  *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
+ *	 notice, this list of conditions and the following disclaimer in the
+ *	 documentation and/or other materials provided with the distribution.
  *
  *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 contributors may be used to endorse or promote products derived
+ *	 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
  * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
@@ -37,63 +37,63 @@ import java.io.*;
 import java.net.*;
 
 public class KnockKnockClient {
-    public static void main(String[] args) throws IOException {
-        
+	public static void main(String[] args) throws IOException {
+		
 		// get host and port number from the command line
-        if (args.length != 2) {
-            System.err.println(
-                "Usage: java EchoClient <host name> <port number>");
-            System.exit(1);
-        }
+		if (args.length != 2) {
+			System.err.println(
+				"Usage: java EchoClient <host name> <port number>");
+			System.exit(1);
+		}
 
-        String hostName = args[0];
-        int portNumber = Integer.parseInt(args[1]);
+		String hostName = args[0];
+		int portNumber = Integer.parseInt(args[1]);
 
-        try (
+		try (
 			// instantiate the a socket object to the knock knock server
-            Socket kkSocket = new Socket(hostName, portNumber);
+			Socket kkSocket = new Socket(hostName, portNumber);
 				
 			// to instantiate "out", we use the constructor of PrintWriter class, 
 			// this constructor takes one parameter which is an output stream for the socket, 
-            PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+			PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
 			
 			// instantiate the "in" object that we will use to read from kkSocket.
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(kkSocket.getInputStream()));
-        ) {
+			BufferedReader in = new BufferedReader(
+				new InputStreamReader(kkSocket.getInputStream()));
+		) {
 			// create a buffered reader from the standard input
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 			
 			// messages from the server and from the user
-            String fromServer;
-            String fromUser;
+			String fromServer;
+			String fromUser;
 
-            while ((fromServer = in.readLine()) != null) {
+			while ((fromServer = in.readLine()) != null) {
 				// display messages from the server
-                System.out.println("Server: " + fromServer);
+				System.out.println("Server: " + fromServer);
 				
 				// if we receive "Bye." then close the connection and end the program
-                if (fromServer.equals("Bye.")) {
+				if (fromServer.equals("Bye.")) {
 					kkSocket.close();
-                    break;
-                }
+					break;
+				}
 				
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
+				fromUser = stdIn.readLine();
+				if (fromUser != null) {
 					// echo back what we typed in
-                    System.out.println("Client: " + fromUser);
+					System.out.println("Client: " + fromUser);
 					
 					// send what we typed in  to the server
-                    out.println(fromUser);
-                }
-            }
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + hostName);
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " +
-                hostName);
-            System.exit(1);
-        }
-    }
+					out.println(fromUser);
+				}
+			}
+		} catch (UnknownHostException e) {
+			System.err.println("Don't know about host " + hostName);
+			System.exit(1);
+		} catch (IOException e) {
+			System.err.println("Couldn't get I/O for the connection to " +
+				hostName);
+			System.exit(1);
+		}
+	}
 }
